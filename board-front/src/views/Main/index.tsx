@@ -102,7 +102,7 @@ export default function Main() {
     const getPopularListRespone = (responseBody: GetPopularListResponseDto | ResponseDto | null) => {
       if (!responseBody) return;
       const { code } = responseBody;
-      if (code === 'DBE') toast('데이터베이스 오류입니다');
+      if (code === 'DBE') toast('데이터베이스 오류입니다.');
       if (code !== 'SU') return;
 
       const { popularWordList } = responseBody as GetPopularListResponseDto;
