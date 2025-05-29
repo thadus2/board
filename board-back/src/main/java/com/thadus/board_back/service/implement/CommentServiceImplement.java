@@ -4,10 +4,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.thadus.board_back.dto.response.ResponseDto;
+import com.thadus.board_back.dto.response.board.DeleteCommentResponseDto;
 import com.thadus.board_back.dto.response.board.PutCommentFavoriteResponseDto;
 import com.thadus.board_back.dto.response.board.PutFavoriteResponseDto;
+import com.thadus.board_back.entity.BoardEntity;
 import com.thadus.board_back.entity.CommentEntity;
 import com.thadus.board_back.entity.CommentFavoriteEntity;
+import com.thadus.board_back.repository.BoardRepository;
 import com.thadus.board_back.repository.CommentFavoriteRepository;
 import com.thadus.board_back.repository.CommentRepository;
 import com.thadus.board_back.repository.UserRepository;
@@ -19,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommentServiceImplement implements CommentService {
 
+    private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final CommentFavoriteRepository commentFavoriteRepository;
@@ -54,6 +58,37 @@ public class CommentServiceImplement implements CommentService {
 
         return PutCommentFavoriteResponseDto.success();
 
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteCommentResponseDto> deleteComment(Integer commentNumber, String email) {
+        
+        try {
+            
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return DeleteCommentResponseDto.noExistUser();
+
+            CommentEntity commentEntity = commentRepository.findByCommentNumber(commentNumber);
+            if (commentEntity == null) return DeleteCommentResponseDto.noExistComment();
+
+            String commentWriterEmail = commentEntity.getUserEmail();
+            boolean isWriter = email.equals(commentWriterEmail);
+            if (!isWriter) return DeleteCommentResponseDto.noPermission();
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(commentEntity.getBoardNumber());
+            commentFavoriteRepository.deleteByCommentNumber(commentNumber);
+            commentRepository.delete(commentEntity);
+            if (boardEntity != null) {
+                boardEntity.decreaseCommentCount();
+                boardRepository.save(boardEntity);
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return DeleteCommentResponseDto.success();
     }
 
 }

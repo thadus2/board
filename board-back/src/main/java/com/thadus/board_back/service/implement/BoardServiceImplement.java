@@ -35,6 +35,7 @@ import com.thadus.board_back.entity.ImageEntity;
 import com.thadus.board_back.entity.SearchLogEntity;
 import com.thadus.board_back.repository.BoardListViewRepository;
 import com.thadus.board_back.repository.BoardRepository;
+import com.thadus.board_back.repository.CommentFavoriteRepository;
 import com.thadus.board_back.repository.CommentRepository;
 import com.thadus.board_back.repository.FavoriteRepository;
 import com.thadus.board_back.repository.ImageRepository;
@@ -58,6 +59,7 @@ public class BoardServiceImplement implements BoardService {
     private final FavoriteRepository favoriteRepository;
     private final SearchLogRepository searchLogRepository;
     private final BoardListViewRepository boardListViewRepository;    
+    private final CommentFavoriteRepository commentFavoriteRepository;
 
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {

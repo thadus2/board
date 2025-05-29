@@ -19,10 +19,12 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
     
     @Query(value=
         "SELECT " +
+        "    C.comment_number AS commentNumber, " +
         "    U.nickname AS nickname, " +
         "    U.profile_image AS profileImage, " +
         "    C.write_datetime AS writeDatetime, " +
-        "    C.content AS content " +
+        "    C.content AS content, " +
+        "    C.user_email as userEmail " +
         "FROM comment AS C " +
         "INNER JOIN user AS U " +
         "ON C.user_email = U.email " +
@@ -31,6 +33,9 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
         nativeQuery=true
     )
     List<GetCommentListResultSet> getCommentList(Integer boardNumber);
+
+    // @Transactional
+    // void 
 
     @Transactional
     void deleteByBoardNumber(Integer boardNumber);    

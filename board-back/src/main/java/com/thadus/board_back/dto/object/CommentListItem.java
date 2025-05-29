@@ -13,16 +13,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentListItem {
+    private int commentNumber;
     private String nickname;
     private String profileImage;
     private String writeDatetime;
     private String content;
+    private String userEmail;
 
     public CommentListItem(GetCommentListResultSet resultSet) {
+        this.commentNumber = resultSet.getCommentNumber();
         this.nickname = resultSet.getNickname();
         this.profileImage = resultSet.getProfileImage();
         this.writeDatetime = resultSet.getWriteDatetime();
         this.content = resultSet.getContent();
+        this.userEmail = resultSet.getUserEmail();
     }
 
     public static List<CommentListItem> copyList(List<GetCommentListResultSet> resultSets) {

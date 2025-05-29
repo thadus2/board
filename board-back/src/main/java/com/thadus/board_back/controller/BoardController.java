@@ -103,8 +103,6 @@ public class BoardController {
         return response;
     }
     
-    
-
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(
         @RequestBody @Valid PostBoardRequestDto requestBody,

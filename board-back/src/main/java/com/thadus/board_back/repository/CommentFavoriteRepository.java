@@ -6,8 +6,13 @@ import org.springframework.stereotype.Repository;
 import com.thadus.board_back.entity.CommentFavoriteEntity;
 import com.thadus.board_back.entity.primaryKey.CommentFavoritePk;
 
+import jakarta.transaction.Transactional;
+
 @Repository
 public interface CommentFavoriteRepository extends JpaRepository<CommentFavoriteEntity, CommentFavoritePk> {
 
     CommentFavoriteEntity findByCommentNumberAndUserEmail(Integer commentNumber, String userEmail);
+
+    @Transactional
+    void deleteByCommentNumber(Integer CommentNumber);
 }
