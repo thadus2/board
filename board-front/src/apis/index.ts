@@ -4,9 +4,10 @@ import { SignInResponseDto, SignUpResponseDto } from "./response/auth";
 import { ResponseDto } from "./response";
 import { GetSignInUserResponseDto, GetUserResponseDto, PatchNicknameResponseDto, PatchProfileImageResponseDto } from "./response/user";
 import { PatchBoardRequestDto, PostBoardRequestDto, PostCommentRequestDto } from "./request/board";
-import { PostBoardResponseDto, GetBoardResponseDto, IncreaseViewCountResponseDto, GetFavoriteListResponseDto, GetCommentListResponseDto, PutFavoriteResponseDto, PostCommentResponseDto, DeleteBoardResponseDto, PatchBoardResponseDto, GetLatestBoardListResponseDto, GetTop3BoardListResponseDto, GetSearchBoardListResponseDto, GetUserBoardListResponseDto } from "./response/board";
+import { PostBoardResponseDto, GetBoardResponseDto, IncreaseViewCountResponseDto, GetFavoriteListResponseDto, GetCommentListResponseDto, PutFavoriteResponseDto, PostCommentResponseDto, DeleteBoardResponseDto, PatchBoardResponseDto, GetLatestBoardListResponseDto, GetTop3BoardListResponseDto, GetSearchBoardListResponseDto, GetUserBoardListResponseDto, PutCommentFavoriteResponseDto } from "./response/board";
 import { GetPopularListResponseDto, GetRelationListResponseDto } from "./response/search";
 import { PatchNicknameRequestDto, PatchProfileImageRequestDto } from "./request/user";
+import GetCommentFavoriteListResponseDto from "./response/board/get-comment-favorite-list.response.dto";
 
 const DOMAIN = 'http://localhost:4000';
 
@@ -55,10 +56,12 @@ const GET_SEARCH_BOARD_LIST_URL = (searchWord: string, preSearchWord: string | n
 const GET_USER_BOARD_LIST_URL = (email: string) => `${API_DOMAIN}/board/user-board-list/${email}`
 const INCREASE_VIEW_COUNT_URL = (boardNumber: number | string) => `${API_DOMAIN}/board/${boardNumber}/increase-view-count`;
 const GET_FAVORITE_LIST_URL = (boardNumber: number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite-list`;
+const GET_COMMENT_FAVORITE_LIST_URL = (commentNumber: number | string) => `${API_DOMAIN}/board/comment/${commentNumber}/favorite-list`;
 const GET_COMMENT_LIST_URL = (boardNumber: number | string) => `${API_DOMAIN}/board/${boardNumber}/comment-list`;
 const PATCH_BOARD_URL = (boardNumber: number | string) => `${API_DOMAIN}/board/${boardNumber}`;
 const POST_BOARD_URL = () => `${API_DOMAIN}/board`;
 const POST_COMMENT_URL = (boardNumber: number | string) => `${API_DOMAIN}/board/${boardNumber}/comment`;
+const PUT_COMMENT_FAVORITE_URL = (commentNumber: number | string) => `${API_DOMAIN}/board/comment/${commentNumber}/favorite`
 const PUT_FAVORITE_URL = (boardNumber: number | string) => `${API_DOMAIN}/board/${boardNumber}/favorite`;
 
 export const deleteBoardRequest = async (boardNumber: number | string, accessToken : string) => {
@@ -173,6 +176,20 @@ export const getFavoriteListRequest = async (boardNumber: number | string) => {
     return result;
 }
 
+export const getCommentFavoriteListRequest = async (commentNumber: number | string) => {
+    const result = await axios.get(GET_COMMENT_FAVORITE_LIST_URL(commentNumber))
+        .then(response => {
+            const responseBody: GetCommentFavoriteListResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        })
+    return result;
+}
+
 export const getCommentListRequest = async (boardNumber: number | string) => {
     const result = await axios.get(GET_COMMENT_LIST_URL(boardNumber))
         .then(response => {
@@ -227,6 +244,20 @@ export const postCommentRequest = async (boardNumber: number | string, requestBo
             return responseBody;
         });
     return result
+}
+
+export const PutCommentFavoriteRequest = async (commentNumber: number | string, accessToken: string) => {
+    const result = await axios.put(PUT_COMMENT_FAVORITE_URL(commentNumber), {}, authorization(accessToken))
+        .then(response => {
+            const responseBody: PutCommentFavoriteResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        });
+    return result;
 }
 
 export const PutFavoriteRequest = async (boardNumber: number | string, accessToken: string) => {
