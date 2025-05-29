@@ -1,3 +1,4 @@
+ALTER TABLE `comment` ADD COLUMN `favorite_count` INT NOT NULL DEFAULT 0
 CREATE TABLE comment_favorite
 (
   user_email VARCHAR(50) NOT NULL COMMENT '사용자 이메일',

@@ -7,4 +7,5 @@ public interface GetCommentListResultSet {
     String getWriteDatetime();
     String getContent();    
     String getUserEmail();
+    Integer getFavoriteCount();
 } 

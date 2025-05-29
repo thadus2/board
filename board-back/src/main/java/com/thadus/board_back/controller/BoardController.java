@@ -7,7 +7,9 @@ import com.thadus.board_back.dto.request.board.PatchBoardRequestDto;
 import com.thadus.board_back.dto.request.board.PostBoardRequestDto;
 import com.thadus.board_back.dto.request.board.PostCommentRequestDto;
 import com.thadus.board_back.dto.response.board.DeleteBoardResponseDto;
+import com.thadus.board_back.dto.response.board.DeleteCommentResponseDto;
 import com.thadus.board_back.dto.response.board.GetBoardResponseDto;
+import com.thadus.board_back.dto.response.board.GetCommentFavoriteListResponseDto;
 import com.thadus.board_back.dto.response.board.GetCommentListResponseDto;
 import com.thadus.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.thadus.board_back.dto.response.board.GetLatestBoardListResponseDto;
@@ -18,6 +20,7 @@ import com.thadus.board_back.dto.response.board.IncreaseViewCountResponseDto;
 import com.thadus.board_back.dto.response.board.PatchBoardResponseDto;
 import com.thadus.board_back.dto.response.board.PostBoardResponseDto;
 import com.thadus.board_back.dto.response.board.PostCommentResponseDto;
+import com.thadus.board_back.dto.response.board.PutCommentFavoriteResponseDto;
 import com.thadus.board_back.dto.response.board.PutFavoriteResponseDto;
 import com.thadus.board_back.service.BoardService;
 
@@ -34,7 +37,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
 @RestController
 @RequestMapping("api/v1/board")
 @RequiredArgsConstructor
@@ -49,6 +51,15 @@ public class BoardController {
         ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber);
         return response;
     }
+
+    @GetMapping("/comment/{commentNumber}/favorite-list")
+    public ResponseEntity<? super GetCommentFavoriteListResponseDto> getCommentFavoriteList(
+        @PathVariable("commentNumber") Integer commentNumber
+    ) {
+        ResponseEntity<? super GetCommentFavoriteListResponseDto> response = boardService.getCommentFavoriteList(commentNumber);
+        return response;
+    }
+    
     
     @GetMapping("/{boardNumber}/favorite-list")
     public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(
@@ -147,6 +158,25 @@ public class BoardController {
         @AuthenticationPrincipal String email
     ) {
         ResponseEntity<? super DeleteBoardResponseDto> response = boardService.deleteBoard(boardNumber, email);
+        return response;
+    }
+
+    @DeleteMapping("/comment/{commentNumber}")
+    public ResponseEntity<? super DeleteCommentResponseDto> deleteComment(
+        @PathVariable("commentNumber") Integer commentNumber,
+        @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super DeleteCommentResponseDto> response = boardService.deleteComment(commentNumber, email);
+        return response;
+
+    }
+
+    @PutMapping("/comment/{commentNumber}/favorite")
+    public ResponseEntity<? super PutCommentFavoriteResponseDto> putCommentFavorite(
+        @PathVariable("commentNumber") Integer commentNumber,
+        @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super PutCommentFavoriteResponseDto> response = boardService.putCommentFavorite(commentNumber, email);
         return response;
     }
     
