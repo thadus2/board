@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.sound.midi.Patch;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -188,7 +185,7 @@ public class BoardServiceImplement implements BoardService {
         return GetSearchBoardListResponseDto.success(boardListViewEntities);
     }    
 
-    @Override
+    @Override 
     public ResponseEntity<? super GetUserBoardListResponseDto> getUserBoardList(String email) {
 
         List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();        

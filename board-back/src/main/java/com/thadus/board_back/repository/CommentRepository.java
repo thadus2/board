@@ -15,6 +15,8 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
     
+    CommentEntity findByCommentNumber(Integer commentNumber);
+    
     @Query(value=
         "SELECT " +
         "    U.nickname AS nickname, " +

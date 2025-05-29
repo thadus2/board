@@ -8,17 +8,15 @@ import com.thadus.board_back.common.ResponseMessage;
 import com.thadus.board_back.dto.response.ResponseDto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class PutCommentFavoriteResponseDto extends ResponseDto {
 
     private PutCommentFavoriteResponseDto() {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
 
-    public static ResponseEntity<PutFavoriteResponseDto> success() {
+    public static ResponseEntity<PutCommentFavoriteResponseDto> success() {
         PutCommentFavoriteResponseDto result = new PutCommentFavoriteResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
